@@ -3,7 +3,7 @@
    ============================================================================
 
    THE CONTENT is transcribed from the five source photographs. Nothing in it
-   is invented. The source is kept in the private learn-english-source repo.
+   is invented. The source photographs were checked and then discarded.
 
    THE TEACHING STRUCTURE around it is built from the two explicit instruction
    books already in this workspace:

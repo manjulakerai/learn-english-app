@@ -2,7 +2,7 @@
  *
  * Bump CACHE when you change any file, or phones keep serving the old one.
  */
-var CACHE = "learn-english-v1";
+var CACHE = "learn-english-v2";
 
 var ASSETS = [
   "./",
