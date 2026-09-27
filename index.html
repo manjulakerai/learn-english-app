@@ -1,0 +1,1741 @@
+<meta charset="utf-8">
+<title>Learn English</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#6B6F3E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Learn English">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="favicon.png">
+
+<style>
+  /* ------------------------------------------------------------------ *
+   * Palette taken off the book itself: aged paper, letterpress ink, the *
+   * olive of the cover's line drawing, and a red-brown correction mark. *
+   * ------------------------------------------------------------------ */
+  :root {
+    --paper:   #EDE7D6;
+    --ink:     #2A2620;
+    --olive:   #6B6F3E;
+    --olive-d: #565A2E;
+    --rust:    #9C4A2F;
+    --night:   #16150F;
+
+    --bg:        var(--paper);
+    --surface:   #F6F2E6;
+    --sunk:      #E4DCC6;
+    --line:      #CFC5A8;
+    --rule:      #B9AC87;
+    --text:      var(--ink);
+    --text-soft: #5A5344;
+    --text-dim:  #8A8069;
+    --accent:    var(--olive-d);
+    --accent-on: #FFFFFF;
+    --mark:      var(--rust);
+    --ok:        #4A6B2E;
+    --ok-bg:     #E0E8CE;
+    --no-bg:     #F2DED6;
+
+    --s--1: 0.8125rem;
+    --s-0:  1.0625rem;
+    --s-1:  1.1875rem;
+    --s-2:  1.4375rem;
+    --s-3:  1.875rem;
+    --s-4:  clamp(2.25rem, 9vw, 3rem);
+
+    /* Gujarati carries matras above and below the line, so it reads small
+       at a size that suits Latin. Its own scale, tunable in one place. */
+    --gu-1: 1.5rem;     /* Gujarati being read: paragraphs, cards, exercises */
+    --gu-0: 1.175rem;   /* Gujarati as a gloss beside English */
+    --gu-lh: 2.05;
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+             ui-serif, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono:  ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+    /* Gujarati needs naming or it silently falls back to tofu boxes. */
+    --gu:    "Gujarati Sangam MN", "Noto Sans Gujarati", "Noto Serif Gujarati",
+             "Shruti", "Nirmala UI", "Mukta Vaani", sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:        var(--night);
+      --surface:   #201E16;
+      --sunk:      #1A1812;
+      --line:      #38342552;
+      --rule:      #4A4532;
+      --text:      #EDE7D6;
+      --text-soft: #B3AC94;
+      --text-dim:  #7C755F;
+      --accent:    #A8AD68;
+      --accent-on: #16150F;
+      --mark:      #D4825F;
+      --ok:        #A7C079;
+      --ok-bg:     #232A16;
+      --no-bg:     #2E1F19;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:        var(--night);
+    --surface:   #201E16;
+    --sunk:      #1A1812;
+    --line:      #383425;
+    --rule:      #4A4532;
+    --text:      #EDE7D6;
+    --text-soft: #B3AC94;
+    --text-dim:  #7C755F;
+    --accent:    #A8AD68;
+    --accent-on: #16150F;
+    --mark:      #D4825F;
+    --ok:        #A7C079;
+    --ok-bg:     #232A16;
+    --no-bg:     #2E1F19;
+  }
+
+  :root[data-theme="light"] {
+    --bg:        var(--paper);
+    --surface:   #F6F2E6;
+    --sunk:      #E4DCC6;
+    --line:      #CFC5A8;
+    --rule:      #B9AC87;
+    --text:      var(--ink);
+    --text-soft: #5A5344;
+    --text-dim:  #8A8069;
+    --accent:    var(--olive-d);
+    --accent-on: #FFFFFF;
+    --mark:      var(--rust);
+    --ok:        #4A6B2E;
+    --ok-bg:     #E0E8CE;
+    --no-bg:     #F2DED6;
+  }
+
+  /* ---- text size ------------------------------------------------------
+   * Three steps, set by the Aa button and remembered per phone. Gujarati
+   * climbs faster than the Latin around it, because that is the script
+   * that was hard to read in the first place.
+   * ------------------------------------------------------------------- */
+
+  :root[data-size="l"] {
+    --gu-1: 1.8rem;
+    --gu-0: 1.4rem;
+    --s-0:  1.15rem;
+    --s-1:  1.3rem;
+    --s--1: 0.875rem;
+  }
+
+  :root[data-size="xl"] {
+    --gu-1: 2.15rem;
+    --gu-0: 1.65rem;
+    --s-0:  1.25rem;
+    --s-1:  1.4rem;
+    --s--1: 0.9375rem;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+
+  /* A class that sets display beats the hidden attribute. Put it back. */
+  [hidden] { display: none !important; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: var(--s-0);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+  }
+
+  .gu, [lang="gu"] {
+    font-family: var(--gu);
+    font-size: var(--gu-1);
+    line-height: var(--gu-lh);
+  }
+
+  /* ---- chrome -------------------------------------------------------- */
+
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: calc(0.7rem + env(safe-area-inset-top)) 1rem 0.7rem;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(160%) blur(12px);
+    font-family: var(--sans);
+  }
+
+  .bar-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--s--1);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .icon-btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    cursor: pointer;
+  }
+
+  .icon-btn:active { background: var(--sunk); }
+  .icon-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-on); }
+
+  .counter {
+    flex: none;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  main {
+    max-width: 34rem;
+    margin-inline: auto;
+    padding: 1.5rem calc(1.25rem + env(safe-area-inset-left))
+             calc(2rem + env(safe-area-inset-bottom))
+             calc(1.25rem + env(safe-area-inset-right));
+  }
+
+  /* ---- contents ------------------------------------------------------ */
+
+  .cover { margin-bottom: 2rem; text-align: center; }
+
+  .cover img {
+    display: block;
+    width: 8.5rem;
+    margin: 0 auto 1.25rem;
+    border: 1px solid var(--line);
+    border-radius: 0.25rem;
+  }
+
+  .cover h1 {
+    margin: 0;
+    font-size: var(--s-4);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .cover .sub {
+    margin: 0.65rem 0 0;
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+  }
+
+  .cover .band {
+    width: 3.5rem;
+    height: 2px;
+    margin: 1.25rem auto 0;
+    background: var(--accent);
+  }
+
+  .progress-wrap { margin-bottom: 2rem; }
+
+  .progress-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.45rem;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .progress-head b { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .progress-track {
+    height: 0.4rem;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--sunk);
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--accent);
+    transition: width 400ms cubic-bezier(.4,0,.2,1);
+  }
+
+  .module-title {
+    margin: 0 0 0.2rem;
+    font-size: var(--s-2);
+    font-weight: 600;
+  }
+
+  .module-sum {
+    margin: 0 0 1rem;
+    color: var(--text-soft);
+    font-family: var(--gu);
+    font-size: var(--gu-0);
+    line-height: var(--gu-lh);
+  }
+
+  .toc { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; padding: 0; list-style: none; }
+
+  .toc button {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .toc button:active { background: var(--sunk); }
+
+  .toc .num {
+    flex: none;
+    width: 1.9rem;
+    height: 1.9rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  .toc button[data-done="1"] .num {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-on);
+  }
+
+  .toc .label { flex: 1; min-width: 0; }
+  .toc .label small { display: block; color: var(--text-dim); font-family: var(--sans); font-size: 0.75rem; }
+  .toc .chev { flex: none; color: var(--text-dim); }
+
+  /* ---- lesson body --------------------------------------------------- */
+
+  .lesson > * + * { margin-top: 1.15rem; }
+
+  h2.lesson-title {
+    margin: 0 0 1.5rem;
+    font-size: var(--s-3);
+    font-weight: 600;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .lesson h3 {
+    margin: 2rem 0 0;
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .lesson p { margin: 0; }
+  .lesson p.gu { font-size: var(--gu-1); }
+
+  .lesson ul, .lesson ol { margin: 0; padding-left: 1.25rem; }
+  .lesson li + li { margin-top: 0.5rem; }
+
+  .note {
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--mark);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--sunk);
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    line-height: 1.55;
+  }
+
+  /* pairs: English line with its Gujarati underneath */
+  .pair {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .pair:last-of-type { border-bottom: 0; }
+  .pair .en { display: block; }
+  .pair .gu { display: block; margin-top: 0.3rem; color: var(--text-soft); font-size: var(--gu-0); }
+
+  /* conjugation table */
+  .conj { border: 1px solid var(--line); border-radius: 0.75rem; overflow: hidden; background: var(--surface); }
+  .conj-head {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--sunk);
+    text-align: center;
+  }
+  .conj-head b { font-size: var(--s-1); letter-spacing: 0.06em; }
+  .conj-head span { display: block; margin-top: 0.25rem; font-family: var(--gu); font-size: var(--gu-0); line-height: var(--gu-lh); color: var(--text-soft); }
+  .conj-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .conj-col { padding: 0.9rem 1rem; }
+  .conj-col + .conj-col { border-left: 1px solid var(--line); }
+  .conj-col h4 {
+    margin: 0 0 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .conj-col ol { margin: 0; padding: 0; list-style: none; }
+  .conj-col li { padding: 0.2rem 0; font-size: var(--s--1); }
+  .conj-col li.bracket { color: var(--text-dim); }
+
+  /* tap-to-reveal word cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(10.75rem, 1fr)); gap: 0.6rem; }
+
+  .card {
+    position: relative;
+    min-height: 6rem;
+    padding: 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 0.7rem;
+    background: var(--surface);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .card .term { display: block; font-family: var(--gu); font-size: var(--gu-1); line-height: 1.85; }
+  .card .def {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    opacity: 0;
+    transform: translateY(0.2rem);
+    transition: opacity 200ms ease, transform 200ms ease;
+  }
+  .card[aria-pressed="true"] { border-color: var(--accent); background: var(--ok-bg); }
+  .card[aria-pressed="true"] .def { color: var(--text); opacity: 1; transform: none; }
+  .card .hint {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.5rem;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .card[aria-pressed="true"] .hint { display: none; }
+
+  /* fill in the blank */
+  .fill { padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+  .fill:last-of-type { border-bottom: 0; }
+  .fill-q { display: flex; gap: 0.6rem; align-items: baseline; }
+  .fill-n { flex: none; color: var(--text-dim); font-family: var(--mono); font-size: 0.8rem; }
+  .fill-sentence { flex: 1; }
+  .fill-verb { color: var(--text-dim); font-style: italic; }
+  .fill input {
+    width: 7rem;
+    margin: 0 0.25rem;
+    padding: 0.2rem 0.45rem;
+    border: 0;
+    border-bottom: 2px solid var(--rule);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: center;
+  }
+  .fill input:focus { outline: 0; border-bottom-color: var(--accent); }
+  .fill[data-state="right"] input { border-bottom-color: var(--ok); color: var(--ok); }
+  .fill[data-state="wrong"] input { border-bottom-color: var(--mark); color: var(--mark); }
+  .fill-why {
+    margin: 0.5rem 0 0 1.9rem;
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+  }
+  .fill-why[hidden] { display: none; }
+
+  /* translate list */
+  .tr { width: 100%; padding: 0.8rem 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+  .tr:last-of-type { border-bottom: 0; }
+  .tr .gu { display: block; font-family: var(--gu); font-size: var(--gu-1); }
+  .tr .en { display: block; margin-top: 0.2rem; color: var(--ok); font-size: var(--s--1); }
+  .tr .en[hidden] { display: none; }
+  .tr .tap { color: var(--text-dim); font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .tr .tap[hidden] { display: none; }
+  .tr-n { color: var(--text-dim); font-family: var(--mono); font-size: 0.8rem; }
+
+  /* quiz */
+  .quiz { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px solid var(--rule); }
+  .q { margin-top: 1.5rem; }
+  .q-text { margin: 0 0 0.7rem; font-size: var(--s-1); }
+  .q-opts { display: flex; flex-direction: column; gap: 0.45rem; }
+  .q-opt {
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    background: var(--surface);
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .q-opt[data-state="right"] { border-color: var(--ok); background: var(--ok-bg); }
+  .q-opt[data-state="wrong"] { border-color: var(--mark); background: var(--no-bg); }
+  .q-opt[disabled] { cursor: default; }
+  .q-why { margin: 0.6rem 0 0; color: var(--text-soft); font-family: var(--sans); font-size: var(--s--1); }
+  .q-why[hidden] { display: none; }
+
+  /* ---- explicit instruction scaffolding -------------------------------
+   * Objective, prior knowledge, checks, the Rule of Two, non-examples and
+   * closure each get their own look, so the learner can tell at a glance
+   * whether they are being taught, checked, or set to work.
+   * ------------------------------------------------------------------- */
+
+  .objective {
+    margin: 0 0 1.75rem;
+    padding: 0.95rem 1.1rem;
+    border-left: 4px solid var(--accent);
+    border-radius: 0 0.6rem 0.6rem 0;
+    background: var(--sunk);
+  }
+
+  .eyebrow-s {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .objective .eyebrow-s { color: var(--text-dim); }
+  .objective p { margin: 0; font-size: var(--s-1); line-height: 1.45; }
+
+  .relevance {
+    margin: 1.75rem 0 0;
+    padding: 0.85rem 1rem;
+    border: 1px dashed var(--rule);
+    border-radius: 0.6rem;
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    line-height: 1.6;
+  }
+
+  .relevance .eyebrow-s { color: var(--text-dim); }
+
+  /* a check for understanding, and the closure check, share a look */
+  .check {
+    margin: 1.75rem 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.8rem;
+    background: var(--surface);
+  }
+
+  .check.closure { margin-top: 2.5rem; border-width: 2px; }
+  .check .eyebrow-s { color: var(--accent); }
+  .check .q { margin-top: 0; }
+  .check .q-text { font-size: var(--s-0); }
+
+  /* the non-example */
+  .contrast { margin: 1.75rem 0; }
+
+  .contrast-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.6rem;
+    font-size: var(--s-0);
+  }
+
+  .contrast-row + .contrast-row { margin-top: 0.5rem; }
+
+  .contrast-row .sign {
+    flex: none;
+    width: 1.3rem;
+    font-family: var(--sans);
+    font-size: var(--s-1);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .contrast-row.yes { background: var(--ok-bg); }
+  .contrast-row.yes .sign { color: var(--ok); }
+  .contrast-row.no  { background: var(--no-bg); }
+  .contrast-row.no  .sign { color: var(--mark); }
+  .contrast-row.no  .txt { text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .contrast-why {
+    margin: 0.6rem 0 0;
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    line-height: 1.55;
+  }
+
+  /* Rule of Two: the worked one, then the matched one */
+  .worked, .mirror {
+    margin: 1.75rem 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    background: var(--surface);
+  }
+
+  .worked { border-left: 4px solid var(--rule); }
+  .mirror { border-left: 4px solid var(--accent); }
+  .worked .eyebrow-s { color: var(--text-dim); }
+  .mirror .eyebrow-s { color: var(--accent); }
+
+  .worked h4, .mirror h4 { margin: 0 0 0.5rem; font-size: var(--s-1); font-weight: 600; }
+  .worked .problem, .mirror .problem { margin: 0 0 0.8rem; }
+
+  .worked ol { margin: 0; padding-left: 1.3rem; color: var(--text-soft); font-size: var(--s--1); line-height: 1.7; }
+  .worked ol li + li { margin-top: 0.45rem; }
+
+  .worked .result {
+    margin: 0.9rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-weight: 600;
+  }
+
+  .mirror input {
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.55rem;
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .mirror input:focus { outline: 0; border-color: var(--accent); }
+  .mirror[data-state="right"] input { border-color: var(--ok); color: var(--ok); }
+  .mirror[data-state="wrong"] input { border-color: var(--mark); }
+
+  .mirror .feedback {
+    margin: 0.65rem 0 0;
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    line-height: 1.6;
+  }
+
+  .mirror .feedback b { color: var(--text); }
+
+  /* the retype gate: a correction ends with the learner producing it */
+  .retype {
+    margin: 0.6rem 0 0;
+    padding: 0.6rem 0.75rem;
+    border-left: 3px solid var(--mark);
+    border-radius: 0 0.45rem 0.45rem 0;
+    background: var(--sunk);
+    color: var(--text-soft);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    line-height: 1.55;
+  }
+
+  .retype b { color: var(--mark); }
+
+  /* foot nav */
+  .foot { display: flex; gap: 0.6rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .btn {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--surface);
+    color: inherit;
+    font-family: var(--sans);
+    font-size: var(--s-0);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-primary { border-color: var(--accent); background: var(--accent); color: var(--accent-on); }
+  .btn[hidden] { display: none; }
+
+  .empty { padding: 3rem 0; text-align: center; color: var(--text-soft); }
+
+  /* ---- update ---------------------------------------------------------
+   * A phone keeps serving whatever it cached, so there has to be a way to
+   * pull the current version by hand as well as automatically.
+   * ------------------------------------------------------------------- */
+
+  .update-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.75rem;
+    background: var(--ok-bg);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+  }
+
+  .update-banner p { flex: 1; margin: 0; }
+  .update-banner b { display: block; }
+
+  .update-banner button {
+    flex: none;
+    padding: 0.55rem 0.95rem;
+    border: 0;
+    border-radius: 0.55rem;
+    background: var(--accent);
+    color: var(--accent-on);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ---- install --------------------------------------------------------
+   * Android offers two things that look alike: Install, which makes a real
+   * app, and Create shortcut, which makes a bookmark that opens in the
+   * browser. The panel names the difference, because the menu does not.
+   * ------------------------------------------------------------------- */
+
+  .install-card {
+    margin-top: 2.5rem;
+    padding: 1.1rem 1.15rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.85rem;
+    background: var(--surface);
+    font-family: var(--sans);
+  }
+
+  .install-card h3 {
+    margin: 0 0 0.35rem;
+    font-size: var(--s-0);
+    font-weight: 700;
+  }
+
+  .install-card p.lede {
+    margin: 0 0 0.9rem;
+    color: var(--text-soft);
+    font-size: var(--s--1);
+    line-height: 1.55;
+  }
+
+  .install-now {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 0;
+    border-radius: 0.65rem;
+    background: var(--accent);
+    color: var(--accent-on);
+    font: inherit;
+    font-size: var(--s-0);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .install-steps {
+    margin: 0;
+    padding-left: 1.3rem;
+    color: var(--text-soft);
+    font-size: var(--s--1);
+    line-height: 1.7;
+  }
+
+  .install-steps li + li { margin-top: 0.55rem; }
+  .install-steps b { color: var(--text); }
+
+  .install-warn {
+    margin: 0.9rem 0 0;
+    padding: 0.7rem 0.85rem;
+    border-left: 3px solid var(--mark);
+    border-radius: 0 0.45rem 0.45rem 0;
+    background: var(--sunk);
+    color: var(--text-soft);
+    font-size: var(--s--1);
+    line-height: 1.55;
+  }
+
+  .install-warn b { color: var(--mark); }
+
+  .install-toggle {
+    margin-top: 0.75rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    font: inherit;
+    font-size: var(--s--1);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .installed {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2.5rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: var(--ok-bg);
+    color: var(--ok);
+    font-family: var(--sans);
+    font-size: var(--s--1);
+    font-weight: 600;
+  }
+
+  .version {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 0.75rem;
+  }
+
+  .version span { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  .version button {
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 0.55rem;
+    background: var(--surface);
+    color: var(--text-soft);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .version button:active { background: var(--sunk); }
+  .version button[disabled] { opacity: 0.55; cursor: default; }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; } }
+</style>
+
+<header class="bar">
+  <button class="icon-btn" id="back" type="button" aria-label="Back to contents" hidden>&#8592;</button>
+  <div class="bar-title" id="bar-title">Learn English</div>
+  <span class="counter" id="counter"></span>
+  <button class="icon-btn" id="textsize" type="button" aria-label="Change the text size">Aa</button>
+  <button class="icon-btn" id="listen" type="button" aria-label="Read this lesson aloud" aria-pressed="false" hidden>&#9658;</button>
+</header>
+
+<main id="view"></main>
+
+<script src="content.js" charset="utf-8"></script>
+<script>
+/* Put the install tags back in <head> if a host wrapped this file. */
+(function () {
+  "use strict";
+  var head = document.head;
+  function ensure(sel, make) {
+    var f = document.querySelector(sel);
+    if (f) { if (f.parentNode !== head) head.appendChild(f); return; }
+    head.appendChild(make());
+  }
+  ensure('link[rel="manifest"]', function () {
+    var l = document.createElement("link"); l.rel = "manifest"; l.href = "manifest.webmanifest"; return l;
+  });
+  ensure('link[rel="apple-touch-icon"]', function () {
+    var l = document.createElement("link"); l.rel = "apple-touch-icon"; l.href = "apple-touch-icon.png"; return l;
+  });
+  [["apple-mobile-web-app-capable","yes"],["mobile-web-app-capable","yes"],
+   ["apple-mobile-web-app-status-bar-style","black-translucent"],
+   ["apple-mobile-web-app-title","Learn English"],["theme-color","#6B6F3E"]].forEach(function (p) {
+    ensure('meta[name="' + p[0] + '"]', function () {
+      var m = document.createElement("meta"); m.name = p[0]; m.content = p[1]; return m;
+    });
+  });
+  if (!document.title) document.title = "Learn English";
+})();
+
+(function () {
+  "use strict";
+
+  var C = window.COURSE || { title: "", subtitle: "", modules: [] };
+  var view    = document.getElementById("view");
+  var back    = document.getElementById("back");
+  var title   = document.getElementById("bar-title");
+  var counter = document.getElementById("counter");
+  var listen  = document.getElementById("listen");
+
+  /* Declared up here because route() runs before the update block below,
+     and a var read too early renders the word "undefined" on screen. */
+  var BUILD = "1.2.0";          // must match version.json on the server
+  var updateReady = false;
+  var latest = null;
+
+  var KEY = "learnenglish.progress.v1";
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { done = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+
+  /* flat list of every lesson, so next/previous is trivial */
+  var flat = [];
+  C.modules.forEach(function (m) {
+    m.lessons.forEach(function (l) { flat.push({ mod: m, lesson: l }); });
+  });
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  /* ---- contents ------------------------------------------------------ */
+
+  function renderContents() {
+    stopSpeech();
+    view.innerHTML = "";
+    back.hidden = true;
+    listen.hidden = true;
+    counter.textContent = "";
+    title.textContent = C.title || "Course";
+    document.title = C.title || "Course";
+
+    if (!flat.length) {
+      var e = el("div", "empty");
+      e.appendChild(el("p", null, "No content loaded yet."));
+      e.appendChild(el("p", null, "Add lessons to content.js and they appear here."));
+      view.appendChild(e);
+      return;
+    }
+
+    var cover = el("div", "cover");
+    var img = new Image();
+    img.src = "cover.jpg";
+    img.alt = "";
+    img.onerror = function () { img.remove(); };
+    cover.appendChild(img);
+    cover.appendChild(el("h1", null, C.title));
+    if (C.subtitle) cover.appendChild(el("p", "sub", C.subtitle));
+    cover.appendChild(el("div", "band"));
+    view.appendChild(cover);
+
+    var doneCount = flat.filter(function (f) { return done[f.lesson.id]; }).length;
+    var pw = el("div", "progress-wrap");
+    var ph = el("div", "progress-head");
+    ph.appendChild(el("span", null, "Progress"));
+    var b = el("b", null, doneCount + " / " + flat.length);
+    ph.appendChild(b);
+    pw.appendChild(ph);
+    var track = el("div", "progress-track");
+    var fill = el("div", "progress-fill");
+    fill.style.width = (flat.length ? (doneCount / flat.length) * 100 : 0) + "%";
+    track.appendChild(fill);
+    pw.appendChild(track);
+    view.appendChild(pw);
+
+    if (updateReady) view.appendChild(makeBanner());
+
+    C.modules.forEach(function (m) {
+      view.appendChild(el("h2", "module-title", m.title));
+      if (m.summary) view.appendChild(el("p", "module-sum", m.summary));
+      var ul = el("ul", "toc");
+      m.lessons.forEach(function (l, i) {
+        var li = el("li");
+        var btn = el("button");
+        btn.type = "button";
+        btn.dataset.done = done[l.id] ? "1" : "0";
+        btn.appendChild(el("span", "num", done[l.id] ? "✓" : String(i + 1)));
+        var lab = el("span", "label");
+        lab.appendChild(document.createTextNode(l.title));
+        if (l.page) lab.appendChild(el("small", null, "Page " + l.page));
+        btn.appendChild(lab);
+        btn.appendChild(el("span", "chev", "›"));
+        btn.addEventListener("click", function () { location.hash = "#/" + l.id; });
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+      view.appendChild(ul);
+    });
+
+    view.appendChild(makeInstallCard());
+    view.appendChild(makeVersionRow());
+  }
+
+  /* ---- blocks -------------------------------------------------------- */
+
+  function renderBlock(b, host) {
+    var n;
+    switch (b.type) {
+      case "heading":
+        host.appendChild(el("h3", null, b.value));
+        break;
+
+      case "text":
+        host.appendChild(el("p", null, b.value));
+        break;
+
+      case "gu":
+        n = el("p", "gu", b.value);
+        n.lang = "gu";
+        host.appendChild(n);
+        break;
+
+      case "note":
+        host.appendChild(el("p", "note", b.value));
+        break;
+
+      case "list":
+        n = el(b.ordered ? "ol" : "ul");
+        b.items.forEach(function (t) { n.appendChild(el("li", null, t)); });
+        host.appendChild(n);
+        break;
+
+      case "pair":
+        n = el("div", "pair");
+        n.appendChild(el("span", "en", b.en));
+        var g = el("span", "gu", b.gu);
+        g.lang = "gu";
+        n.appendChild(g);
+        host.appendChild(n);
+        break;
+
+      case "table":
+        var wrap = el("div", "table-wrap");
+        wrap.style.overflowX = "auto";
+        var t = el("table");
+        t.style.width = "100%";
+        t.style.borderCollapse = "collapse";
+        var thead = el("thead"), tr = el("tr");
+        b.headers.forEach(function (h) {
+          var th = el("th", null, h);
+          th.style.cssText = "text-align:left;padding:.5rem .6rem;border-bottom:2px solid var(--rule);font-family:var(--sans);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim)";
+          tr.appendChild(th);
+        });
+        thead.appendChild(tr); t.appendChild(thead);
+        var tb = el("tbody");
+        b.rows.forEach(function (r) {
+          var row = el("tr");
+          r.forEach(function (c) {
+            var td = el("td", null, c);
+            td.style.cssText = "padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top";
+            row.appendChild(td);
+          });
+          tb.appendChild(row);
+        });
+        t.appendChild(tb); wrap.appendChild(t); host.appendChild(wrap);
+        break;
+
+      case "conj":
+        n = el("div", "conj");
+        var head = el("div", "conj-head");
+        head.appendChild(el("b", null, b.title));
+        var gs = el("span", null, b.gu);
+        gs.lang = "gu";
+        head.appendChild(gs);
+        n.appendChild(head);
+        var cols = el("div", "conj-cols");
+        [["Singular", "એક વચન", b.singular],
+         ["Plural",   "બહુ વચન", b.plural]].forEach(function (pairArr) {
+          var col = el("div", "conj-col");
+          col.appendChild(el("h4", null, pairArr[0]));
+          var ol = el("ol");
+          pairArr[2].forEach(function (line) {
+            var li = el("li", line.charAt(0) === "[" ? "bracket" : null, line);
+            ol.appendChild(li);
+          });
+          col.appendChild(ol);
+          cols.appendChild(col);
+        });
+        n.appendChild(cols);
+        host.appendChild(n);
+        break;
+
+      /* ---- explicit instruction blocks ---- */
+
+      case "cfu":
+        host.appendChild(makeCheck(b, "Check yourself", false));
+        break;
+
+      case "contrast":
+        n = el("div", "contrast");
+        var yes = el("div", "contrast-row yes");
+        yes.appendChild(el("span", "sign", "✓"));
+        yes.appendChild(el("span", "txt", b.right));
+        n.appendChild(yes);
+        var no = el("div", "contrast-row no");
+        no.appendChild(el("span", "sign", "✗"));
+        no.appendChild(el("span", "txt", b.wrong));
+        n.appendChild(no);
+        if (b.why) n.appendChild(el("p", "contrast-why", b.why));
+        host.appendChild(n);
+        break;
+
+      case "worked":
+        n = el("div", "worked");
+        n.appendChild(el("span", "eyebrow-s", "Watch this one"));
+        if (b.title) n.appendChild(el("h4", null, b.title));
+        n.appendChild(el("p", "problem", b.problem));
+        var ol2 = el("ol");
+        b.steps.forEach(function (s) { ol2.appendChild(el("li", null, s)); });
+        n.appendChild(ol2);
+        n.appendChild(el("p", "result", b.answer));
+        host.appendChild(n);
+        break;
+
+      case "mirror":
+        host.appendChild(makeMirror(b));
+        break;
+
+      case "key":
+        /* collected and grouped by the caller */
+        break;
+    }
+  }
+
+  /* A check for understanding. Same shape as a quiz question, but it sits
+     inside the teaching and has to be answered before the next concept. */
+  function makeCheck(item, eyebrow, isClosure) {
+    var wrap = el("div", "check" + (isClosure ? " closure" : ""));
+    wrap.appendChild(el("span", "eyebrow-s", eyebrow));
+
+    var q = el("div", "q");
+    q.appendChild(el("p", "q-text", item.q));
+    var opts = el("div", "q-opts");
+    var why = el("p", "q-why", item.why);
+    why.hidden = true;
+    var answered = false;
+
+    item.options.forEach(function (text, oi) {
+      var b = el("button", "q-opt", text);
+      b.type = "button";
+      b.addEventListener("click", function () {
+        if (answered) return;
+        answered = true;
+        var right = oi === item.answer;
+        b.dataset.state = right ? "right" : "wrong";
+        if (!right) opts.children[item.answer].dataset.state = "right";
+        Array.prototype.forEach.call(opts.children, function (c) { c.disabled = true; });
+        why.hidden = false;
+        if (navigator.vibrate) navigator.vibrate(right ? 8 : [4, 40, 4]);
+      });
+      opts.appendChild(b);
+    });
+
+    q.appendChild(opts);
+    q.appendChild(why);
+    wrap.appendChild(q);
+    return wrap;
+  }
+
+  /* The Rule of Two. The learner works a problem matched to the one just
+     demonstrated. A wrong answer is corrected and then retyped, because a
+     correction only counts once the learner has produced the right answer. */
+  function makeMirror(b) {
+    var wrap = el("div", "mirror");
+    wrap.appendChild(el("span", "eyebrow-s", "Now you"));
+    if (b.title) wrap.appendChild(el("h4", null, b.title));
+    wrap.appendChild(el("p", "problem", b.problem));
+
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.setAttribute("autocapitalize", "none");
+    inp.setAttribute("autocomplete", "off");
+    inp.setAttribute("spellcheck", "false");
+    inp.setAttribute("aria-label", "Your answer");
+    inp.placeholder = "Type your answer";
+    wrap.appendChild(inp);
+
+    var fb = el("p", "feedback");
+    fb.hidden = true;
+    wrap.appendChild(fb);
+
+    var gate = el("p", "retype");
+    gate.hidden = true;
+    wrap.appendChild(gate);
+
+    var cleared = false;
+
+    function check() {
+      var v = inp.value.trim().toLowerCase();
+      if (!v) { wrap.removeAttribute("data-state"); fb.hidden = true; gate.hidden = true; return; }
+      var ok = v === b.answer.toLowerCase();
+
+      if (ok) {
+        wrap.dataset.state = "right";
+        fb.hidden = false;
+        fb.innerHTML = "";
+        fb.appendChild(el("b", null, cleared ? "That is it. " : "Correct. "));
+        fb.appendChild(document.createTextNode(b.why || ""));
+        gate.hidden = true;
+        cleared = true;
+        return;
+      }
+
+      wrap.dataset.state = "wrong";
+      fb.hidden = false;
+      fb.innerHTML = "";
+      fb.appendChild(el("b", null, "The answer is " + b.answer + ". "));
+      fb.appendChild(document.createTextNode(b.why || ""));
+      gate.hidden = false;
+      gate.innerHTML = "";
+      gate.appendChild(el("b", null, "Now type it yourself. "));
+      gate.appendChild(document.createTextNode(
+        "Reading the right answer is not the same as producing it."));
+    }
+
+    inp.addEventListener("blur", check);
+    inp.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); inp.blur(); }
+    });
+    return wrap;
+  }
+
+  /* key blocks get grouped into one card grid wherever the run starts */
+  function renderBlocks(blocks, host) {
+    var i = 0;
+    while (i < blocks.length) {
+      if (blocks[i].type === "key") {
+        var grid = el("div", "cards");
+        while (i < blocks.length && blocks[i].type === "key") {
+          grid.appendChild(makeCard(blocks[i]));
+          i++;
+        }
+        host.appendChild(grid);
+      } else {
+        renderBlock(blocks[i], host);
+        i++;
+      }
+    }
+  }
+
+  function makeCard(b) {
+    var c = el("button", "card");
+    c.type = "button";
+    c.setAttribute("aria-pressed", "false");
+    var term = el("span", "term", b.term);
+    term.lang = "gu";
+    c.appendChild(term);
+    c.appendChild(el("span", "def", b.def));
+    c.appendChild(el("span", "hint", "Tap"));
+    c.addEventListener("click", function () {
+      var on = c.getAttribute("aria-pressed") === "true";
+      c.setAttribute("aria-pressed", on ? "false" : "true");
+      if (!on && navigator.vibrate) navigator.vibrate(6);
+    });
+    return c;
+  }
+
+  /* ---- lesson -------------------------------------------------------- */
+
+  function renderLesson(id) {
+    stopSpeech();
+    var idx = flat.findIndex(function (f) { return f.lesson.id === id; });
+    if (idx < 0) { location.hash = ""; return; }
+    var l = flat[idx].lesson;
+
+    view.innerHTML = "";
+    back.hidden = false;
+    listen.hidden = false;
+    title.textContent = l.title;
+    document.title = l.title + " · " + C.title;
+    counter.textContent = (idx + 1) + "/" + flat.length;
+    window.scrollTo(0, 0);
+
+    var body = el("div", "lesson");
+    body.appendChild(el("h2", "lesson-title", l.title));
+
+    /* 1. The objective, stated to the learner before anything is taught. */
+    if (l.objective) {
+      var ob = el("div", "objective");
+      ob.appendChild(el("span", "eyebrow-s", "By the end of this you can"));
+      ob.appendChild(el("p", null, l.objective));
+      body.appendChild(ob);
+    }
+
+    /* 2. Activate prior knowledge, before the new content. */
+    if (l.prior) body.appendChild(makeCheck(l.prior, "First, from last time", false));
+
+    /* 3 and 4. The teaching, with its checks and worked examples inline. */
+    renderBlocks(l.blocks || [], body);
+
+    /* 5. Relevance. Archer allows it to be dropped on continuation
+          lessons, so it only renders where the content file sets one. */
+    if (l.relevance) {
+      var rv = el("div", "relevance");
+      rv.appendChild(el("span", "eyebrow-s", "Why this matters"));
+      rv.appendChild(document.createTextNode(l.relevance));
+      body.appendChild(rv);
+    }
+
+    /* 7. Independent practice. */
+    if (l.fill && l.fill.length)      renderFill(l.fill, body);
+    if (l.translate)                  renderTranslate(l.translate, body);
+    if (l.quiz && l.quiz.length)      renderQuiz(l.quiz, body);
+
+    /* 6. Closure, the last check before the lesson is called done. */
+    if (l.closure) body.appendChild(makeCheck(l.closure, "Before you move on", true));
+
+    var foot = el("div", "foot");
+    var markBtn = el("button", "btn", done[l.id] ? "Done ✓" : "Mark done");
+    markBtn.type = "button";
+    markBtn.addEventListener("click", function () {
+      done[l.id] = !done[l.id];
+      save();
+      markBtn.textContent = done[l.id] ? "Done ✓" : "Mark done";
+    });
+    foot.appendChild(markBtn);
+
+    var nextBtn = el("button", "btn btn-primary", idx + 1 < flat.length ? "Next lesson" : "Back to contents");
+    nextBtn.type = "button";
+    nextBtn.addEventListener("click", function () {
+      done[l.id] = true; save();
+      location.hash = idx + 1 < flat.length ? "#/" + flat[idx + 1].lesson.id : "";
+    });
+    foot.appendChild(nextBtn);
+    body.appendChild(foot);
+
+    view.appendChild(body);
+  }
+
+  function renderFill(items, host) {
+    var wrap = el("div");
+    items.forEach(function (f, i) {
+      var row = el("div", "fill");
+      var q = el("div", "fill-q");
+      q.appendChild(el("span", "fill-n", (i + 1) + "."));
+      var s = el("span", "fill-sentence");
+      s.appendChild(document.createTextNode(f.before + " "));
+      s.appendChild(el("span", "fill-verb", "(" + f.verb + ")"));
+      var inp = document.createElement("input");
+      inp.type = "text";
+      inp.setAttribute("autocapitalize", "none");
+      inp.setAttribute("autocomplete", "off");
+      inp.setAttribute("spellcheck", "false");
+      inp.setAttribute("aria-label", "Answer for question " + (i + 1));
+      s.appendChild(inp);
+      s.appendChild(document.createTextNode(" " + f.after));
+      q.appendChild(s);
+      row.appendChild(q);
+      var why = el("p", "fill-why", f.why);
+      why.hidden = true;
+      row.appendChild(why);
+
+      var gate = el("p", "retype");
+      gate.hidden = true;
+      row.appendChild(gate);
+
+      var seenAnswer = false;
+
+      /* Archer's six-part correction: immediate, specific, focused on the
+         correct answer, and it ends with the learner producing it. So a
+         wrong answer is told and then has to be typed. */
+      function check() {
+        var v = inp.value.trim().toLowerCase();
+        if (!v) { row.removeAttribute("data-state"); why.hidden = true; gate.hidden = true; return; }
+        var ok = v === f.answer.toLowerCase();
+        row.dataset.state = ok ? "right" : "wrong";
+        why.hidden = false;
+
+        if (ok) {
+          why.textContent = (seenAnswer ? "That is it. " : "") + f.why;
+          gate.hidden = true;
+          return;
+        }
+
+        seenAnswer = true;
+        why.textContent = "The answer is " + f.answer + ". " + f.why;
+        gate.hidden = false;
+        gate.innerHTML = "";
+        gate.appendChild(el("b", null, "Now type it yourself. "));
+        gate.appendChild(document.createTextNode(
+          "Reading the right answer is not the same as producing it."));
+      }
+      inp.addEventListener("blur", check);
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); inp.blur(); } });
+
+      wrap.appendChild(row);
+    });
+    host.appendChild(wrap);
+  }
+
+  function renderTranslate(items, host) {
+    var wrap = el("div");
+    items.forEach(function (t) {
+      var b = el("button", "tr");
+      b.type = "button";
+      var g = el("span", "gu");
+      g.lang = "gu";
+      g.appendChild(el("span", "tr-n", t.n + ". "));
+      g.appendChild(document.createTextNode(t.gu));
+      b.appendChild(g);
+      var tap = el("span", "tap", "Tap for a model answer");
+      b.appendChild(tap);
+      var en = el("span", "en", t.en);
+      en.hidden = true;
+      b.appendChild(en);
+      b.addEventListener("click", function () {
+        en.hidden = !en.hidden;
+        tap.hidden = !en.hidden;
+      });
+      wrap.appendChild(b);
+    });
+    host.appendChild(wrap);
+  }
+
+  function renderQuiz(qs, host) {
+    var wrap = el("div", "quiz");
+    wrap.appendChild(el("h3", null, "Check yourself"));
+    qs.forEach(function (item, qi) {
+      var q = el("div", "q");
+      q.appendChild(el("p", "q-text", (qi + 1) + ". " + item.q));
+      var opts = el("div", "q-opts");
+      var why = el("p", "q-why", item.why);
+      why.hidden = true;
+      var answered = false;
+      item.options.forEach(function (text, oi) {
+        var b = el("button", "q-opt", text);
+        b.type = "button";
+        b.addEventListener("click", function () {
+          if (answered) return;
+          answered = true;
+          var right = oi === item.answer;
+          b.dataset.state = right ? "right" : "wrong";
+          if (!right) opts.children[item.answer].dataset.state = "right";
+          Array.prototype.forEach.call(opts.children, function (c) { c.disabled = true; });
+          why.hidden = false;
+          if (navigator.vibrate) navigator.vibrate(right ? 8 : [4, 40, 4]);
+        });
+        opts.appendChild(b);
+      });
+      q.appendChild(opts);
+      q.appendChild(why);
+      wrap.appendChild(q);
+    });
+    host.appendChild(wrap);
+  }
+
+  /* ---- listening ----------------------------------------------------- */
+
+  var speaking = false;
+
+  function stopSpeech() {
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    speaking = false;
+    listen.setAttribute("aria-pressed", "false");
+    listen.innerHTML = "&#9658;";
+  }
+
+  function lessonText() {
+    /* Read the English. Gujarati is skipped because a phone's default
+       voice mangles it, and a mangled word teaches the wrong sound. */
+    var out = [];
+    view.querySelectorAll(".lesson-title, .lesson h3, .lesson p, .pair .en, .conj-col li, .q-text")
+      .forEach(function (n) {
+        if (n.closest && n.closest('[lang="gu"]')) return;
+        if (n.lang === "gu") return;
+        var t = (n.textContent || "").trim();
+        if (t) out.push(t);
+      });
+    return out.join(". ");
+  }
+
+  listen.addEventListener("click", function () {
+    if (!window.speechSynthesis) return;
+    if (speaking) { stopSpeech(); return; }
+    var u = new SpeechSynthesisUtterance(lessonText());
+    u.rate = 0.92;
+    u.lang = "en-GB";
+    var vs = window.speechSynthesis.getVoices();
+    var pick = vs.find(function (v) { return /en-(GB|AU|IN)/i.test(v.lang); });
+    if (pick) u.voice = pick;
+    u.onend = stopSpeech;
+    u.onerror = stopSpeech;
+    window.speechSynthesis.speak(u);
+    speaking = true;
+    listen.setAttribute("aria-pressed", "true");
+    listen.innerHTML = "&#9632;";
+  });
+
+  back.addEventListener("click", function () { location.hash = ""; });
+
+  /* ---- text size ----------------------------------------------------- */
+
+  var SIZE_KEY = "learnenglish.textsize";
+  var SIZES = ["", "l", "xl"];          // "" is the normal step
+  var LABELS = { "": "Normal text", "l": "Large text", "xl": "Largest text" };
+  var sizeIdx = 0;
+
+  try {
+    var stored = localStorage.getItem(SIZE_KEY);
+    var found = SIZES.indexOf(stored);
+    if (found > -1) sizeIdx = found;
+  } catch (e) {}
+
+  function applySize() {
+    var v = SIZES[sizeIdx];
+    if (v) document.documentElement.dataset.size = v;
+    else delete document.documentElement.dataset.size;
+    textsize.title = LABELS[v];
+    textsize.setAttribute("aria-label", LABELS[v] + ". Tap to change.");
+    try { localStorage.setItem(SIZE_KEY, v); } catch (e) {}
+  }
+
+  var textsize = document.getElementById("textsize");
+  textsize.addEventListener("click", function () {
+    sizeIdx = (sizeIdx + 1) % SIZES.length;
+    applySize();
+    if (navigator.vibrate) navigator.vibrate(6);
+  });
+  applySize();
+
+  /* ---- routing ------------------------------------------------------- */
+
+  function route() {
+    var h = location.hash.replace(/^#\/?/, "");
+    if (h) renderLesson(h); else renderContents();
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* ---- offline, and pulling the current version ----------------------
+   *
+   * A phone serves whatever it cached last, so it needs BOTH: a check that
+   * runs on its own, and a button anyone can press without being told how.
+   * ------------------------------------------------------------------- */
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  }
+
+  function makeBanner() {
+    var bn = el("div", "update-banner");
+    var p = el("p");
+    p.appendChild(el("b", null, "A newer version is ready."));
+    p.appendChild(document.createTextNode(
+      latest && latest.notes ? latest.notes : "Tap Update to get it."
+    ));
+    bn.appendChild(p);
+    var b = el("button", null, "Update");
+    b.type = "button";
+    b.addEventListener("click", function () { doUpdate(b); });
+    bn.appendChild(b);
+    return bn;
+  }
+
+  /* ---- install ------------------------------------------------------- */
+
+  var standalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+              (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/.test(ua);
+  var deferredPrompt = null;
+  var stepsOpen = false;
+
+  window.addEventListener("beforeinstallprompt", function (ev) {
+    ev.preventDefault();
+    deferredPrompt = ev;
+    if (!location.hash) renderContents();
+  });
+
+  window.addEventListener("appinstalled", function () {
+    deferredPrompt = null;
+    standalone = true;
+    if (!location.hash) renderContents();
+  });
+
+  function androidSteps() {
+    return [
+      ["Make sure you are in ", "Chrome", ". Samsung Internet and Firefox can only make a bookmark."],
+      ["Tap the ", "three dots", " at the top right."],
+      ["Tap ", "Add to Home screen", "."],
+      ["On the panel that slides up, tap ", "Install", "."]
+    ];
+  }
+
+  function iosSteps() {
+    return [
+      ["Make sure you are in ", "Safari", ". Chrome on an iPhone cannot do this."],
+      ["Tap the ", "Share", " button in the bottom bar. It is a square with an arrow coming out of the top."],
+      ["Scroll down the list and tap ", "Add to Home Screen", "."],
+      ["Tap ", "Add", " at the top right."]
+    ];
+  }
+
+  function desktopSteps() {
+    return [
+      ["Send this page's address to your phone. Message it to yourself."],
+      ["Open it in ", "Chrome", " on Android, or ", "Safari", " on an iPhone."],
+      ["Come back to this panel there and it will show you the right steps."]
+    ];
+  }
+
+  function makeInstallCard() {
+    if (standalone) {
+      var ok = el("div", "installed");
+      ok.appendChild(el("span", null, "✓"));
+      ok.appendChild(el("span", null, "Installed. You are running this from the home screen."));
+      return ok;
+    }
+
+    var card = el("div", "install-card");
+    card.appendChild(el("h3", null, "Put this on your home screen"));
+    card.appendChild(el("p", "lede",
+      "It gets its own icon, opens without a browser bar, and works with no signal. " +
+      "No app store and no account."));
+
+    /* Android Chrome hands us a real install prompt. One tap beats four. */
+    if (deferredPrompt) {
+      var now = el("button", "install-now", "Install on this phone");
+      now.type = "button";
+      now.addEventListener("click", function () {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (res) {
+          deferredPrompt = null;
+          if (res && res.outcome === "accepted") standalone = true;
+          if (!location.hash) renderContents();
+        });
+      });
+      card.appendChild(now);
+
+      var toggle = el("button", "install-toggle",
+        stepsOpen ? "Hide the manual steps" : "Or do it from the menu yourself");
+      toggle.type = "button";
+      toggle.addEventListener("click", function () {
+        stepsOpen = !stepsOpen;
+        if (!location.hash) renderContents();
+      });
+      card.appendChild(toggle);
+      if (!stepsOpen) return card;
+    }
+
+    var steps = isAndroid ? androidSteps() : isIOS ? iosSteps() : desktopSteps();
+    var ol = el("ol", "install-steps");
+    steps.forEach(function (parts) {
+      var li = el("li");
+      parts.forEach(function (chunk, i) {
+        if (i % 2 === 1) li.appendChild(el("b", null, chunk));
+        else li.appendChild(document.createTextNode(chunk));
+      });
+      ol.appendChild(li);
+    });
+    card.appendChild(ol);
+
+    if (isAndroid || !isIOS) {
+      var warn = el("p", "install-warn");
+      warn.appendChild(el("b", null, "Install, not Create shortcut. "));
+      warn.appendChild(document.createTextNode(
+        "Android offers both and they look the same. Create shortcut makes a bookmark " +
+        "that opens in the browser. Install makes a real app. If it opened with a web " +
+        "address bar across the top, the shortcut was made. Delete that icon and do it again."));
+      card.appendChild(warn);
+    }
+
+    return card;
+  }
+
+  function makeVersionRow() {
+    var row = el("div", "version");
+    var left = el("div");
+    left.appendChild(document.createTextNode("Version "));
+    left.appendChild(el("span", null, BUILD));
+    row.appendChild(left);
+
+    var b = el("button", null, "Update");
+    b.type = "button";
+    b.addEventListener("click", function () { doUpdate(b); });
+    row.appendChild(b);
+    return row;
+  }
+
+  /* Wipe every cache, throw away the old service worker, come back fresh.
+     Nothing the learner has done is touched: progress lives in
+     localStorage, which this deliberately leaves alone. */
+  function doUpdate(btn) {
+    btn.disabled = true;
+    btn.textContent = "Updating";
+
+    var jobs = [];
+
+    if (window.caches && caches.keys) {
+      jobs.push(caches.keys().then(function (ks) {
+        return Promise.all(ks.map(function (k) { return caches.delete(k); }));
+      }));
+    }
+
+    if ("serviceWorker" in navigator && navigator.serviceWorker.getRegistrations) {
+      jobs.push(navigator.serviceWorker.getRegistrations().then(function (rs) {
+        return Promise.all(rs.map(function (r) { return r.unregister(); }));
+      }));
+    }
+
+    Promise.all(jobs)["catch"](function () {})
+      .then(function () {
+        /* A changed query string defeats any cache that survived. */
+        var base = location.href.split("#")[0].split("?")[0];
+        location.replace(base + "?u=" + Date.now());
+      });
+  }
+
+  /* Check on open, and again whenever the app comes back to the front. */
+  function checkForUpdate() {
+    if (!navigator.onLine) return;
+    fetch("version.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (v) {
+        if (!v || !v.version) return;
+        latest = v;
+        if (v.version !== BUILD) {
+          updateReady = true;
+          if (!location.hash) renderContents();
+        }
+      })["catch"](function () {});
+  }
+
+  checkForUpdate();
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) checkForUpdate();
+  });
+})();
+</script>
